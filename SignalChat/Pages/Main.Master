@@ -1,0 +1,42 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="SignalChat.Pages.Main" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - Archethought Messaging Service</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="/css/home-page.css">
+    <link rel="stylesheet" href="/css/Modal-Login-form.css">
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <nav class="navbar navbar-dark navbar-expand-md sticky-top py-3" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="/"><span>
+                    <img src="/img/brands/Mooltissm_secure_messaging_application_logo_with_white_backgrou_78898317-51bf-4021-8363-c365dcd15206-PhotoRoom.png-PhotoRoom.png" style="width: 6rem;"></span></a>
+                <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item"><a class="nav-link active" href="index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="requisition">Requisition</a></li>
+                    </ul>
+                    <a class="btn btn-info shadow" role="button" id="admin-login-button" href="admin-login">Admin Login</a>
+                </div>
+            </div>
+        </nav>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+
+    </form>
+    <script src="/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/admin-login-page.js"></script>
+    <script src="/Scripts/bold-and-dark.js"></script>
+    <script src="/Scripts/requisition-page.js"></script>
+</body>
+</html>

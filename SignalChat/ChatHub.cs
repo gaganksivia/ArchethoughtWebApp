@@ -20,17 +20,6 @@ namespace SignalChat
         static List<UserDetail> ConnectedUsers = new List<UserDetail>();
         static List<StoreMessage> UserStoreMessage = new List<StoreMessage>();
 
-        //public override Task OnConnected()
-        //{
-        //    UserDetail user = ConnectedUsers.Where(x => x.ConnectionId == Context.ConnectionId).FirstOrDefault();
-        //    if (user != null)
-        //    {
-        //        user.Status = true;
-        //    }
-        //    return base.OnConnected();
-        //}
-
-
         public void Send(string FromUserName, string Message, string ToUserName, object SenderPublicKey)
         {
             UserDetail ReceiverUser = ConnectedUsers.Where(x => x.UserName == ToUserName).FirstOrDefault();
@@ -47,14 +36,14 @@ namespace SignalChat
                 UserStoreMessage.Add(new StoreMessage { FromUsername = FromUserName, Message = Message, ToUsername = ToUserName, UserPublicKey = SenderPublicKey, MessageDateTime = DateTime.Now, Status = false });
             }
         }
-        public void SendKey(string name, object PublicKey)
+        public void SendKey(string name,string receiverusername, object PublicKey)
         {
             if (name.Trim() == "" || PublicKey == null)
                 return;
             UserDetail user = ConnectedUsers.Where(x => x.UserName == name).FirstOrDefault();
             if (user != null)
             {
-                Clients.Client(user.ConnectionId).sendrequestkey(PublicKey);
+                Clients.Client(user.ConnectionId).sendrequestkey(PublicKey, receiverusername);
             }
         }
 
@@ -85,7 +74,7 @@ namespace SignalChat
                 UserDetail RequestedUserInfo = ConnectedUsers.Where(x => x.UserName == name).FirstOrDefault();
                 //Clients.Client(Context.ConnectionId).getuserkey(RequestedUserInfo.UserPublicKey, name, ConnectedUsers.Select(x => x.UserName).ToArray());
                 //UserDetail SenderInfo = ConnectedUsers.Where(x => x.ConnectionId == Context.ConnectionId).FirstOrDefault();
-                Clients.Client(RequestedUserInfo.ConnectionId).getuserkey(myusername, ConnectedUsers.Select(x => x.UserName).ToArray());
+                Clients.Client(RequestedUserInfo.ConnectionId).getuserkey(myusername, name, ConnectedUsers.Select(x => x.UserName).ToArray());
             }
         }
         public void ClearUsersData()
