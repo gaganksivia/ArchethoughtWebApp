@@ -4,16 +4,16 @@ $('.friend-drawer--onhover').on('click', function () {
 
 });
 
-function Addnewcontact(name) {
-    for (var i = 0; i < name.length; i++) {
-        if (name[i] != myusername && !$('#box_' + name[i]).length) {
-            $('#newuseradd').append('<div class="friend-drawer friend-drawer--onhover" onclick=\'setchatbox("' + name[i] + '")\'  id=box_' + name[i] + ' >' +
+function Addnewcontact(userlist) {
+    for (var i = 0; i < userlist.length; i++) {
+        if (!$('#box_' + userlist[i].UserName).length) {
+            $('#newuseradd').append('<div class="friend-drawer friend-drawer--onhover" onclick=\'setchatbox("' + userlist[i].UserName + '")\'  id=box_' + userlist[i].UserName + ' >' +
                 '<img class= "profile-image" src="/img/user_icon.png" alt = "" >' +
                 '<div class="text">' +
-                '<h6>' + name[i] + '</h6>' +
-                '<p   id="lastmsg_' + name[i] + '" class="text-muted"></p > ' +
+                '<h6>' + userlist[i].UserName + '</h6>' +
+                '<p   id="lastmsg_' + userlist[i].UserName + '" class="text-muted"></p > ' +
                 '</div>' +
-                '<span id="lastmsgtime_' + name[i] + '" class="timtext-muted small"></span>' +
+                '<span id="lastmsgtime_' + userlist[i].UserName + '" class="timtext-muted small"></span>' +
                 '</div >' +
                 '<hr>');
         }

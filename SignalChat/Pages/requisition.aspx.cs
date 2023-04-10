@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
+using SignalChat.Class;
 
 namespace SignalChat.Pages
 {
@@ -21,7 +22,7 @@ namespace SignalChat.Pages
 
             SqlConnection cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionDB"].ConnectionString);
             SqlCommand cmd = cnn.CreateCommand();
-            cmd.CommandText = "select convert(nvarchar,id)+'$'+name from tbl_User where email=@email";
+            cmd.CommandText = "select name+'$'+convert(nvarchar,id) from tbl_User where email=@email";
             cmd.Parameters.AddWithValue("@email", txtemail.Value.Trim());
             if (cnn.State != ConnectionState.Open)
                 cnn.Open();
@@ -43,16 +44,18 @@ namespace SignalChat.Pages
                 int id = (int)cmd.ExecuteScalar();
                 strname = txtname.Value.ToString().Trim() + "$" + id.ToString();
             }
-            cmd.CommandText = "insert into tbl_Request " +
-           "([request_date]" +
-           ",[id_user]" +
-           ",[id_request_type]) values (getdate(), @id_user,@id_request_type)";
-            cmd.Parameters.Clear();
-            cmd.Parameters.AddWithValue("@id_user", strname.ToString().Split('$')[1]);
-            cmd.Parameters.AddWithValue("@id_request_type", hfRequestType.Value.ToString().Split('$')[1]);
-            cmd.ExecuteNonQuery();
+           // cmd.CommandText = "insert into tbl_Request " +
+           //"([request_date]" +
+           //",[id_user]" +
+           //",[id_request_type]) values (getdate(), @id_user,@id_request_type)";
+           // cmd.Parameters.Clear();
+           // cmd.Parameters.AddWithValue("@id_user", strname.ToString().Split('$')[1]);
+           // cmd.Parameters.AddWithValue("@id_request_type", hfRequestType.Value.ToString().Split('$')[1]);
+           // cmd.ExecuteNonQuery();
             Session["ChatInfo"] = strname + "$" + hfRequestType.Value.ToString();
-            Response.Redirect("Chat");
+            UserDetail.ConnectedUsers.Add(new UserDetail { UserName = txtname.Value.ToString().Trim(), RequestTypeID = int.Parse(hfRequestType.Value.ToString().Split('$')[1]),UserCategoryID=5
+                                                          ,UserID=int.Parse(strname.ToString().Split('$')[1]), Status = false });
+            Response.Redirect("SelectAdmin");
         }
     }
 }

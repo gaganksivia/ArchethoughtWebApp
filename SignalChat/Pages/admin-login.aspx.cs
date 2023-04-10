@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SignalChat.Class;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -19,10 +20,10 @@ namespace SignalChat.Pages
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            SqlConnection cnn = new SqlConnection("Data Source=WIN-5FMBPR6ABEV\\SQLEXPRESS;Initial Catalog=Archethought;Integrated Security=True");
+            SqlConnection cnn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionDB"].ConnectionString);
             SqlCommand cmd = cnn.CreateCommand();
-            cmd.CommandText = "select name + '$' + CONVERT(nvarchar,usercategory)+ '$' +tbl_UserCategory.category_name from tbl_User " +
-                              " inner join tbl_UserCategory  on tbl_UserCategory.id_user_category=tbl_User.usercategory and tbl_User.usercategory <> 5 " +
+            cmd.CommandText = "select  name + '$' + CONVERT(nvarchar,tbl_Admin_request.id_request) + '$' + CONVERT(nvarchar,id) from tbl_User " +
+                              " inner join tbl_Admin_request  on tbl_Admin_request.id_admin=tbl_User.id" +
                               " where username=@username and password=@password";
             cmd.Parameters.AddWithValue("@username", username.Value.Trim());
             cmd.Parameters.AddWithValue("@password", password.Value.Trim());
@@ -31,6 +32,18 @@ namespace SignalChat.Pages
             var AdminInfo = cmd.ExecuteScalar();
             if (AdminInfo != null)
             {
+                UserDetail admin = UserDetail.ConnectedUsers.Where(x => x.UserName == username.Value).FirstOrDefault();
+                if (admin == null)
+                {
+                    UserDetail.ConnectedUsers.Add(new UserDetail
+                    {
+                        UserName = username.Value.Trim(),
+                        RequestTypeID = int.Parse(AdminInfo.ToString().Split('$')[1]),
+                        UserCategoryID = int.Parse(AdminInfo.ToString().Split('$')[1]),
+                        UserID = int.Parse(AdminInfo.ToString().Split('$')[2]),
+                        Status = false
+                    });
+                }
                 Session["AdminInfo"] = AdminInfo;
                 Response.Redirect("Chat");
             }

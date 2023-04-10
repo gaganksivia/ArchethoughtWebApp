@@ -1,32 +1,49 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using System.Web;
-using System.Xml.Linq;
-using DotNetOpenAuth.Messaging.Bindings;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Infrastructure;
 using SignalChat.Class;
+using System.Data.SqlClient;
 
 namespace SignalChat
 {
     public class ChatHub : Hub
     {
+        static SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[tbl_Request]" +
+           "([request_date]" +
+           ",[fromusername]" +
+           ",[message]" +
+           ",[tousername]" +
+           ",[public_key])" +
+           "VALUES" +
+           "(getdate()" +
+           ",@fromusername" +
+           ",@message" +
+           ",@tousername" +
+           ",@public_key)", new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionDB"].ConnectionString));
 
-        static List<UserDetail> ConnectedUsers = new List<UserDetail>();
         static List<StoreMessage> UserStoreMessage = new List<StoreMessage>();
 
         public void Send(string FromUserName, string Message, string ToUserName, object SenderPublicKey)
         {
-            UserDetail ReceiverUser = ConnectedUsers.Where(x => x.UserName == ToUserName).FirstOrDefault();
-            if (ReceiverUser!= null && ReceiverUser.Status == true)
+            UserDetail ReceiverUser = UserDetail.ConnectedUsers.Where(x => x.UserName == ToUserName).FirstOrDefault();
+            if (ReceiverUser != null && ReceiverUser.Status == true)
             {
                 var NewMessage = new StoreMessage { FromUsername = FromUserName, Message = Message, ToUsername = ToUserName, UserPublicKey = SenderPublicKey, MessageDateTime = DateTime.Now, Status = true };
                 UserStoreMessage.Add(NewMessage);
+                if (cmd.Parameters.Count == 0)
+                {
+                    cmd.Parameters.Add("@fromusername", System.Data.SqlDbType.NVarChar);
+                    cmd.Parameters.Add("@message", System.Data.SqlDbType.NVarChar);
+                    cmd.Parameters.Add("@tousername", System.Data.SqlDbType.NVarChar);
+                    cmd.Parameters.Add("@public_key", System.Data.SqlDbType.NVarChar);
+                }
+                cmd.Parameters["@fromusername"].Value = FromUserName;
+                cmd.Parameters["@message"].Value = Message;
+                cmd.Parameters["@tousername"].Value = ToUserName;
+                cmd.Parameters["@public_key"].Value = SenderPublicKey.ToString();
+                if (cmd.Connection.State != System.Data.ConnectionState.Open) { cmd.Connection.Open(); }
+                cmd.ExecuteNonQuery();
                 var TempMessages = UserStoreMessage.Where(x => x.ToUsername == ToUserName && x.Status == false).ToList();
                 TempMessages.Add(NewMessage);
                 Clients.Client(ReceiverUser.ConnectionId).receivemsg(TempMessages);
@@ -36,11 +53,11 @@ namespace SignalChat
                 UserStoreMessage.Add(new StoreMessage { FromUsername = FromUserName, Message = Message, ToUsername = ToUserName, UserPublicKey = SenderPublicKey, MessageDateTime = DateTime.Now, Status = false });
             }
         }
-        public void SendKey(string name,string receiverusername, object PublicKey)
+        public void SendKey(string name, string receiverusername, object PublicKey)
         {
             if (name.Trim() == "" || PublicKey == null)
                 return;
-            UserDetail user = ConnectedUsers.Where(x => x.UserName == name).FirstOrDefault();
+            UserDetail user = UserDetail.ConnectedUsers.Where(x => x.UserName == name).FirstOrDefault();
             if (user != null)
             {
                 Clients.Client(user.ConnectionId).sendrequestkey(PublicKey, receiverusername);
@@ -49,43 +66,46 @@ namespace SignalChat
 
         public void setuser(string username)
         {
-            UserDetail User = ConnectedUsers.Where(x => x.UserName == username).FirstOrDefault();
-            var TempMessages = UserStoreMessage.Where(x => x.ToUsername == username && x.Status == false).ToList(); ;
+            UserDetail User = UserDetail.ConnectedUsers.Where(x => x.UserName == username).FirstOrDefault();
             if (User != null)
             {
-                ConnectedUsers.Where(x => x.UserName == username).ToList().ForEach(x => x.Status = true);
-                ConnectedUsers.Where(x => x.UserName == username).ToList().ForEach(x => x.ConnectionId = Context.ConnectionId);
+                var TempMessages = UserStoreMessage.Where(x => x.ToUsername == username && x.Status == false).ToList();
+                User.Status = true;
+                User.ConnectionId = Context.ConnectionId;
                 UserStoreMessage.Where(x => x.ToUsername == username && x.Status == false).ToList().ForEach(x => x.Status = true);
-                Clients.Client(User.ConnectionId).newuseradd(ConnectedUsers.Select(x => x.UserName).ToArray(), TempMessages.ToArray());
+                if (User.UserCategoryID != 5)//Sync Admins
+                {
+                    Clients.Client(User.ConnectionId).newuseradd(UserDetail.ConnectedUsers.Where(x => x.SelectedAdminToChat == User.UserName).ToArray(), TempMessages.ToArray());
+                }
+                else//Sync Clients and admins
+                {
+                    Clients.Client(User.ConnectionId).newuseradd(UserDetail.ConnectedUsers.Where(x => x.UserName == User.SelectedAdminToChat).ToArray(), TempMessages.ToArray());
+                    UserDetail AdminUser = UserDetail.ConnectedUsers.Where(x => x.UserName == User.SelectedAdminToChat).FirstOrDefault();
+                    Clients.Client(AdminUser.ConnectionId).newuseradd(UserDetail.ConnectedUsers.Where(x => x.UserName == username).ToArray(), TempMessages.ToArray());
+                }
             }
-            else
-            {
-                ConnectedUsers.Add(new UserDetail { ConnectionId = Context.ConnectionId, UserName = username, Status = true });
-                Clients.All.newuseradd(ConnectedUsers.Select(x => x.UserName).ToArray(), "");
-            }
-            
         }
         public void AskUserPublicKey(string name, string myusername)
         {
             // Call the broadcastMessage method to update clients.
 
-            if (ConnectedUsers.Count() > 1)
+            if (UserDetail.ConnectedUsers.Count() > 1)
             {
-                UserDetail RequestedUserInfo = ConnectedUsers.Where(x => x.UserName == name).FirstOrDefault();
+                UserDetail RequestedUserInfo = UserDetail.ConnectedUsers.Where(x => x.UserName == name).FirstOrDefault();
                 //Clients.Client(Context.ConnectionId).getuserkey(RequestedUserInfo.UserPublicKey, name, ConnectedUsers.Select(x => x.UserName).ToArray());
                 //UserDetail SenderInfo = ConnectedUsers.Where(x => x.ConnectionId == Context.ConnectionId).FirstOrDefault();
-                Clients.Client(RequestedUserInfo.ConnectionId).getuserkey(myusername, name, ConnectedUsers.Select(x => x.UserName).ToArray());
+                Clients.Client(RequestedUserInfo.ConnectionId).getuserkey(myusername, name, UserDetail.ConnectedUsers.Where(x => x.UserName != myusername && x.UserCategoryID == 5).ToArray());
             }
         }
         public void ClearUsersData()
         {
-            ConnectedUsers.Clear();
+            UserDetail.ConnectedUsers.Clear();
             Clients.All.refreshpage();
         }
 
         public void SignOut(string username)
         {
-            UserDetail user = ConnectedUsers.Where(x => x.ConnectionId == Context.ConnectionId).FirstOrDefault();
+            UserDetail user = UserDetail.ConnectedUsers.Where(x => x.ConnectionId == Context.ConnectionId).FirstOrDefault();
             if (user != null)
             {
                 user.Status = false;
@@ -109,7 +129,7 @@ namespace SignalChat
         {
             if (arrymsg != null)
             {
-                UserDetail user = ConnectedUsers.Where(x => x.UserName == ToUser).FirstOrDefault();
+                UserDetail user = UserDetail.ConnectedUsers.Where(x => x.UserName == ToUser).FirstOrDefault();
                 if (user != null)
                 {
                     Clients.Client(user.ConnectionId).receivearchivemsg(arrymsg, FromUser);

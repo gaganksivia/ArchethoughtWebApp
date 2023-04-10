@@ -1,5 +1,6 @@
 const requisitions = document.querySelectorAll('.req-type');
 $(document).ready(function () {
+    $('#admin-list-modal').modal('show');
     // Add click event listener to each image
     requisitions.forEach(req => {
         
@@ -55,3 +56,7 @@ $(function(){
     var maxDate = year + '-' + month + '-' + day;    
     $('#dateOfBirth').attr('max', maxDate);
 });
+
+function gotochatbox(name) {
+    $('#ContentPlaceHolder1_hfselectedAdmin').val(name);
+}

@@ -97,12 +97,5 @@
             </div>
         </div>
     </section>
-    <footer class="bg-dark">
-        <div class="container py-4 py-lg-5">
-            <hr>
-            <div class="text-muted d-flex justify-content-between align-items-center pt-3">
-                <p class="mb-0">Copyright © 2023 Archethought Messaging Service</p>
-            </div>
-        </div>
-    </footer>
+
 </asp:Content>

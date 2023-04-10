@@ -212,7 +212,7 @@ async function createsecretkey(SenderpublicKeyJWK, senderusername) {
 }
 
 chat.client.getuserkey = async function (senderusername, receiverusername, name) {
-    Addnewcontact(name);
+    //Addnewcontact(name);
     await agreeSharedSecretKey(senderusername);
     chat.server.sendKey(senderusername, receiverusername, JSON.parse(localStorage.getItem("PublicKey_" + senderusername)));
 };

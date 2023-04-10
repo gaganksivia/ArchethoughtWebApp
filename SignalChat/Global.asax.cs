@@ -16,6 +16,7 @@ namespace SignalChat
             RouteTable.Routes.MapPageRoute("admin-login", "admin-login", "~/Pages/admin-login.aspx");
             RouteTable.Routes.MapPageRoute("requisition", "requisition", "~/Pages/requisition.aspx");
             RouteTable.Routes.MapPageRoute("Chat", "Chat", "~/Pages/Chat.aspx");
+            RouteTable.Routes.MapPageRoute("SelectAdmin", "SelectAdmin", "~/Pages/SelectAdmin.aspx");
         }
 
         protected void Session_Start(object sender, EventArgs e)
