@@ -1,0 +1,42 @@
+.parallax-image {
+  border-radius: 8px;
+}
+
+div {
+}
+
+.login-form {
+  padding: 2rem;
+  background-color: #2d2c38;
+}
+
+#admin-login-button {
+  /*background-color: #d29700;*/
+}
+
+#mainNav {
+  /*background-color: var(--bs-gray-600);*/
+}
+
+.requisition-type:hover {
+  transform: scale(1.02);
+}
+
+.requisition-type {
+  transition: all .2s ease-in-out;
+}
+
+.requisition-type {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-radius: 5px;
+  cursor: pointer !important;
+}
+
+.requisition-type:hover {
+  background-color: #24232d;
+  cursor: pointer;
+}
+
+/* req */
+

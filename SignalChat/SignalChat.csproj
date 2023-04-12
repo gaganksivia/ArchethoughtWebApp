@@ -105,8 +105,68 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\fonts\fa-brands-400.svg" />
+    <Content Include="css\fonts\fa-regular-400.svg" />
+    <Content Include="css\fonts\fa-solid-900.svg" />
+    <Content Include="css\fonts\font-awesome.min.css" />
+    <Content Include="css\fonts\fontawesome-all.min.css" />
+    <Content Include="css\fonts\fontawesome-webfont.svg" />
+    <Content Include="css\fonts\fontawesome5-overrides.min.css" />
+    <Content Include="css\home-page.css" />
+    <Content Include="css\material-icons.min.css" />
+    <Content Include="css\Modal-Login-form.css" />
+    <Content Include="Global.asax" />
+    <Content Include="img\brands\apple.png" />
+    <Content Include="img\brands\facebook.png" />
+    <Content Include="img\brands\google.png" />
+    <Content Include="img\brands\microsoft.png" />
+    <Content Include="img\brands\Mooltissm_secure_messaging_application_logo_with_white_backgrou_78898317-51bf-4021-8363-c365dcd15206-PhotoRoom.png-PhotoRoom.png" />
+    <Content Include="img\brands\Mooltissm_secure_messaging_application_logo_with_white_backgrou_78898317-51bf-4021-8363-c365dcd15206.png" />
+    <Content Include="img\brands\twitter.png" />
+    <Content Include="img\products\1.jpg" />
+    <Content Include="img\products\2.jpg" />
+    <Content Include="img\products\3.jpg" />
+    <Content Include="img\products\depositphotos_98505198-stock-photo-fresh-vegetables-fruits-and-other.jpg" />
+    <Content Include="img\products\help-image.png" />
+    <Content Include="img\products\istockphoto-1177156986-612x612.jpg" />
+    <Content Include="img\products\istockphoto-1217408094-612x612.jpg" />
+    <Content Include="img\products\istockphoto-1330442385-612x612.jpg" />
+    <Content Include="img\products\istockphoto-1347286761-612x612.jpg" />
+    <Content Include="img\team\avatar2.jpg" />
+    <Content Include="img\team\avatar4.jpg" />
+    <Content Include="img\team\avatar5.jpg" />
+    <Content Include="img\user_icon.png" />
+    <Content Include="Index.aspx" />
+    <Content Include="Pages\admin-login.aspx" />
+    <Content Include="Pages\Chat.aspx" />
+    <Content Include="Pages\MasterPage.Master" />
+    <Content Include="css\fonts\fa-brands-400.eot" />
+    <Content Include="css\fonts\fa-brands-400.ttf" />
+    <Content Include="css\fonts\fa-brands-400.woff" />
+    <Content Include="css\fonts\fa-brands-400.woff2" />
+    <Content Include="css\fonts\fa-regular-400.eot" />
+    <Content Include="css\fonts\fa-regular-400.ttf" />
+    <Content Include="css\fonts\fa-regular-400.woff" />
+    <Content Include="css\fonts\fa-regular-400.woff2" />
+    <Content Include="css\fonts\fa-solid-900.eot" />
+    <Content Include="css\fonts\fa-solid-900.ttf" />
+    <Content Include="css\fonts\fa-solid-900.woff" />
+    <Content Include="css\fonts\fa-solid-900.woff2" />
+    <Content Include="css\fonts\fontawesome-webfont.eot" />
+    <Content Include="css\fonts\fontawesome-webfont.ttf" />
+    <Content Include="css\fonts\fontawesome-webfont.woff" />
+    <Content Include="css\fonts\fontawesome-webfont.woff2" />
+    <Content Include="css\fonts\FontAwesome.otf" />
+    <Content Include="img\products\Medical-Equipment-Discounts-for-Persons-with-Disabilities-e1600956443885.jpg.webp" />
+    <Content Include="Pages\Main.Master" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="index.html" />
+    <Content Include="css\style.css" />
+    <Content Include="Pages\requisition.aspx" />
+    <Content Include="Pages\SelectAdmin.aspx" />
+    <Content Include="Scripts\admin-login-page.js" />
+    <Content Include="Scripts\bold-and-dark.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -114,10 +174,66 @@
     <Content Include="Scripts\jquery.signalR-2.2.2.js" />
     <Content Include="Scripts\jquery.signalR-2.2.2.min.js" />
     <Content Include="Scripts\jscrypto\ecdh.js" />
+    <Content Include="Scripts\requisition-page.js" />
+    <Content Include="Scripts\script.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChatHub.cs" />
+    <Compile Include="Class\StoreMessage.cs" />
+    <Compile Include="Class\UserDetail.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\admin-login.aspx.cs">
+      <DependentUpon>admin-login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\admin-login.aspx.designer.cs">
+      <DependentUpon>admin-login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Chat.aspx.cs">
+      <DependentUpon>Chat.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Chat.aspx.designer.cs">
+      <DependentUpon>Chat.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Main.Master.cs">
+      <DependentUpon>Main.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Main.Master.designer.cs">
+      <DependentUpon>Main.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MasterPage.Master.cs">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\MasterPage.Master.designer.cs">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\requisition.aspx.cs">
+      <DependentUpon>requisition.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\requisition.aspx.designer.cs">
+      <DependentUpon>requisition.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SelectAdmin.aspx.cs">
+      <DependentUpon>SelectAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SelectAdmin.aspx.designer.cs">
+      <DependentUpon>SelectAdmin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
