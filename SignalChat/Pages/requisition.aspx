@@ -36,7 +36,7 @@
                 <div class="col mb-4 requisition-type">
                     <div class="req-type">
                         <a href="#">
-                            <img class="rounded img-fluid shadow w-100 fit-cover req-type-image" src="/img/products/Medical-Equipment-Discounts-for-Persons-with-Disabilities-e1600956443885.jpg.webp" style="height: 250px;"></a>
+                            <img class="rounded img-fluid shadow w-100 fit-cover req-type-image" src="/img/products/Medical-Equipment-Discounts-for-Persons-with-Disabilities-e1600956443885.jpg" style="height: 250px;"></a>
                         <div class="py-4">
                             <span class="badge bg-primary mb-2">Secure</span>
                             <h4 class="fw-bold">Disability Service</h4>
@@ -75,7 +75,7 @@
                         </div>
                         <div class="modal-body">
                             <form id="user-login-form" method="post">
-                                <asp:HiddenField  runat="server" ID="hfRequestType"  />
+                                <asp:HiddenField runat="server" ID="hfRequestType" />
                                 <div>
                                     <img class="rounded img-fluid shadow w-100 fit-cover" id="user-login-req-type" src="/img/products/depositphotos_98505198-stock-photo-fresh-vegetables-fruits-and-other.jpg"
                                         style="height: 160px; margin-bottom: 1rem; border-radius: 3px !important;">
@@ -84,20 +84,25 @@
                                     <i class="far fa-clipboard fa-user"></i>
                                     <input class="form-control" type="text" id="user-login-req-placeholder" placeholder="Placeholder" required="required" readonly="readonly" style="user-select: none; pointer-events: none;">
                                 </div>
+
                                 <div class="form-group">
                                     <i class="fa fa-star fa-user"></i>
-                                    <input class="form-control" type="email" id="txtemail"  runat="server"   required="required" name="email" placeholder="Email">
+                                    <input class="form-control" type="email" id="txtemail" runat="server" required="required" name="email" placeholder="Email">
                                 </div>
                                 <div class="form-group">
                                     <i class="fa fa-star fa-user"></i>
-                                    <input class="form-control" type="text"  runat="server"  id="txtname" required="required" placeholder="First Name" name="name">
-                                    <div class="form-group">
-                                        <i class="fa fa-birthday-cake fa-lock"></i>
-                                        <input class="form-control" runat="server" id="txtdob"  type="date" required="required" name="dob">
-                                    </div>
+                                    <input class="form-control" type="text" id="txtName" runat="server" required="required" name="name" placeholder="Name">
+                                </div>
+                                <div class="form-group">
+                                    <i class="fa fa-star fa-user"></i>
+                                    <input class="form-control" type="password" id="txtPassword" runat="server" required="required" name="Password" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <i class="fa fa-birthday-cake fa-lock"></i>
+                                    <input class="form-control" runat="server" id="txtdob" type="date" name="dob">
                                 </div>
                                 <div class="d-flex justify-content-center form-group" id="user-login-submit" style="margin-top: 1REM;">
-                                    <asp:Button class="btn btn-primary btn-block btn-lg" runat="server" ID="btnUserLogin"  Text="Submit" OnClick="btnUserLogin_Click" />
+                                    <asp:Button class="btn btn-primary btn-block btn-lg" runat="server" ID="btnUserLogin" Text="Submit" OnClick="btnUserLogin_Click" />
                                     <%--<button class="btn btn-primary btn-block btn-lg"   type="submit" value="Login" onclick="btnUserLogin_Click" id=""  >Submit</button>--%>
                                 </div>
                             </form>

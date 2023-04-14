@@ -10,7 +10,7 @@
                 <div class="modal-dialog modal-login">
                     <div class="modal-content">
                         <div class="modal-header" style="padding: 0px;">
-                            <h4 class="h4 modal-title">Select your buddy</h4>
+                            <h4 class="h4 modal-title">Choose your buddy</h4>
                         </div>
                         <div class="modal-body">
                             <form id="user-login-form" method="post">

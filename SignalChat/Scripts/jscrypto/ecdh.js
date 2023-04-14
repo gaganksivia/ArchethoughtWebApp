@@ -130,8 +130,8 @@ async function agreeSharedSecretKey(sendername) {
         "jwk",
         alicesKeyPair.privateKey
     );
-    localStorage.setItem("PrivateKey_" + sendername, JSON.stringify(PrivateKeyJwk));
-    localStorage.setItem("PublicKey_" + sendername, JSON.stringify(publicKeyJwk));
+    localStorage.setItem("PrivateKey_" + sendername.toLowerCase(), JSON.stringify(PrivateKeyJwk));
+    localStorage.setItem("PublicKey_" + sendername.toLowerCase(), JSON.stringify(publicKeyJwk));
 
 }
 async function SendMessage() {
@@ -141,16 +141,16 @@ async function SendMessage() {
         if ($.connection.hub && $.connection.hub.state === $.signalR.connectionState.disconnected) {
             $.connection.hub.start()
         }
-        chat.server.send(myusername, base64Data, currentchatuser, JSON.parse(localStorage.getItem("PublicKey_" + currentchatuser)));
+        chat.server.send(myusername, base64Data, currentchatuser, JSON.parse(localStorage.getItem("PublicKey_" + currentchatuser.toLowerCase())));
     }
-    setsendmessage(currentchatuser, messagetosend);
+    setsendmessage(currentchatuser.toLowerCase(), messagetosend);
     $('#message').val('').focus();
 }
 
 async function ReceiveMessages(message) {
     for (var i = 0; i < message.length; i++) {
         //currentchatuser = message[i].FromUsername;
-        var RestorePrivateKeyJwk = JSON.parse(localStorage.getItem("PrivateKey_" + message[i].FromUsername));
+        var RestorePrivateKeyJwk = JSON.parse(localStorage.getItem("PrivateKey_" + message[i].FromUsername.toLowerCase()));
         const privateKey = await window.crypto.subtle.importKey(
             "jwk",
             RestorePrivateKeyJwk,
@@ -172,11 +172,11 @@ async function ReceiveMessages(message) {
             true,
             []
         );
-        localStorage.setItem("SenderpublicKey_" + message[i].FromUsername, JSON.stringify(message[i].UserPublicKey));
+        localStorage.setItem("SenderpublicKey_" + message[i].FromUsername.toLowerCase(), JSON.stringify(message[i].UserPublicKey));
         alicesSecretKey = await deriveSecretKey(privateKey, publicKey);
         let encodemsg = await decrypt(message[i].Message);
         // Add the message to the page.
-        setreceivemessage(message[i].FromUsername, encodemsg, message[i].MessageDateTime);
+        setreceivemessage(message[i].FromUsername.toLowerCase(), encodemsg, message[i].MessageDateTime);
 
     }
 }
@@ -196,7 +196,7 @@ async function createsecretkey(SenderpublicKeyJWK, senderusername) {
         []
     );
     await agreeSharedSecretKey(senderusername);
-    var PrivateKeyJwk = JSON.parse(localStorage.getItem("PrivateKey_" + senderusername));
+    var PrivateKeyJwk = JSON.parse(localStorage.getItem("PrivateKey_" + senderusername.toLowerCase()));
     const privateKey = await window.crypto.subtle.importKey(
         "jwk",
         PrivateKeyJwk,
@@ -214,7 +214,7 @@ async function createsecretkey(SenderpublicKeyJWK, senderusername) {
 chat.client.getuserkey = async function (senderusername, receiverusername, name) {
     //Addnewcontact(name);
     await agreeSharedSecretKey(senderusername);
-    chat.server.sendKey(senderusername, receiverusername, JSON.parse(localStorage.getItem("PublicKey_" + senderusername)));
+    chat.server.sendKey(senderusername, receiverusername, JSON.parse(localStorage.getItem("PublicKey_" + senderusername.toLowerCase())));
 };
 chat.client.sendrequestkey = async function (senderpublickey, senderusername) {
     await createsecretkey(senderpublickey, senderusername);
@@ -236,7 +236,7 @@ chat.client.refreshpage = async function () {
 
 $('#sendmessage').click(async function () {
     if (currentchatuser != '') {
-        var RestoreSenderpublicKey = JSON.parse(localStorage.getItem("SenderpublicKey_" + currentchatuser));
+        var RestoreSenderpublicKey = JSON.parse(localStorage.getItem("SenderpublicKey_" + currentchatuser.toLowerCase()));
         if (RestoreSenderpublicKey != null) {
             createsecretkey(RestoreSenderpublicKey, currentchatuser);
         }
@@ -252,8 +252,8 @@ $('#signout').click(function () {
 
 
 $('#clearcache').click(function () {
-    localStorage.removeItem("PrivateKey_" + currentchatuser);
-    localStorage.removeItem("PublicKey_" + currentchatuser);
+    localStorage.removeItem("PrivateKey_" + currentchatuser.toLowerCase());
+    localStorage.removeItem("PublicKey_" + currentchatuser.toLowerCase());
 });
 $('#clearusers').click(function () {
     chat.server.clearUsersData();

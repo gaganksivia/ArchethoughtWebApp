@@ -151,7 +151,10 @@ hr {
   background: #74b9ff;
   color: #fff;
 }
-
+.offset-md-7 .chat-bubble {
+    background: #74b9ff;
+    color: #fff;
+}
 .chat-box-tray {
   background: #eee;
   display: flex;
