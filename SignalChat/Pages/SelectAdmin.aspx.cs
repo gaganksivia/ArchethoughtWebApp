@@ -13,29 +13,37 @@ namespace SignalChat.Pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["ChatInfo"] != null && UserDetail.ConnectedUsers != null)
+            try
             {
-                string strChatInfo = (string)Session["ChatInfo"];
-
-                var OnlineAdmins = UserDetail.ConnectedUsers.Where(x => x.RequestTypeID == int.Parse(strChatInfo.Split('$')[3]) && x.Status == true && x.UserCategoryID != 5).ToList();
-                ltOnlineAdmin.Text = "<ul class=\"list-group\">";
-                foreach (var item in OnlineAdmins)
+                if (Session["ChatInfo"] != null && UserDetail.ConnectedUsers != null)
                 {
-                    ltOnlineAdmin.Text += " <li class=\"list-group-item\" >"+
-                        "<input class=\"form-check-input me-1\" type=\"radio\" name=\"listGroupRadio\" onclick='gotochatbox(\"" + item.UserName + "\")'  id=\"" + item.UserName + "\" >"+
-                        "<label class=\"form-check-label\" for=\"" + item.UserName + "\">" + item.UserName + "</label></li>";
+                    string strChatInfo = (string)Session["ChatInfo"];
+
+                    var OnlineAdmins = UserDetail.ConnectedUsers.Where(x => x.RequestTypeID == int.Parse(strChatInfo.Split('$')[3]) && x.UserCategoryID != 5).ToList();
+                    ltOnlineAdmin.Text = "<ul class=\"list-group\">";
+                    foreach (var item in OnlineAdmins)
+                    {
+                        ltOnlineAdmin.Text += " <li class=\"list-group-item\" >" +
+                            "<input class=\"form-check-input me-1\" type=\"radio\" name=\"listGroupRadio\" onclick='gotochatbox(\"" + item.UserName + "\")'  id=\"" + item.UserName + "\" >" +
+                            "<label " + (item.Status == true ? " style='color:green' " : " style='color:red' ") + " class=\"form-check-label\" for=\"" + item.UserName + "\">" + item.UserName + "</label></li>";
+                    }
+                    ltOnlineAdmin.Text += "</ul>";
                 }
-                ltOnlineAdmin.Text += "</ul>";
             }
+            catch { }
         }
 
         protected void btnStartChat_Click(object sender, EventArgs e)
         {
-            if (hfselectedAdmin.Value != "" && Session["ChatInfo"] != null)
+            try
             {
-                UserDetail.ConnectedUsers.Where(x => x.UserName == ((string)Session["ChatInfo"]).Split('$')[0]).ToList().ForEach(x => x.SelectedAdminToChat = hfselectedAdmin.Value);
-                Response.Redirect("Chat");
+                if (hfselectedAdmin.Value != "" && Session["ChatInfo"] != null)
+                {
+                    UserDetail.ConnectedUsers.Where(x => x.UserName == ((string)Session["ChatInfo"]).Split('$')[0].ToLower()).ToList().ForEach(x => x.SelectedAdminToChat = hfselectedAdmin.Value);
+                    Response.Redirect("Chat");
+                }
             }
+            catch { }
         }
     }
 }

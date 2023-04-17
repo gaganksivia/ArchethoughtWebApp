@@ -7,7 +7,7 @@ $('.friend-drawer--onhover').on('click', function () {
 function Addnewcontact(userlist) {
     for (var i = 0; i < userlist.length; i++) {
         if (!$('#box_' + userlist[i].UserName).length) {
-            $('#newuseradd').append('<div class="friend-drawer friend-drawer--onhover" onclick=\'setchatbox("' + userlist[i].UserName + '")\'  id=box_' + userlist[i].UserName + ' >' +
+            $('#newuseradd').append('<div class="friend-drawer friend-drawer--onhover" onclick=\'setchatbox("' + userlist[i].UserName.toLowerCase() + '")\'  id=box_' + userlist[i].UserName + ' >' +
                 '<img class= "profile-image" src="/img/user_icon.png" alt = "" >' +
                 '<div class="text">' +
                 '<h6>' + userlist[i].UserName + '</h6>' +
@@ -44,7 +44,7 @@ function setsendmessage(username, message) {
         $('#discussions').append('<div id="discussion_' + username + '"></div >');
     }
     $(id).append('<div class="row no-gutters" >' +
-        '<div class="col-md-3 offset-md-9">' +
+        '<div class="col-md-5 offset-md-7">' +
         '<div class="chat-bubble chat-bubble--right">' + message +
         '<br><span class="text-muted small">' + time + '</span>' +
         '</div>' +
@@ -61,7 +61,7 @@ function setreceivemessage(username, message, time) {
         $(id).hide();
     }
     $(id).append('<div class="row no-gutters" >' +
-        '<div class="col-md-3">' +
+        '<div class="col-md-5">' +
         '<div class="chat-bubble chat-bubble--left">' + message +
         '<br><span class="text-muted small">' + timetoset + '</span>' +
         '</div>' +
